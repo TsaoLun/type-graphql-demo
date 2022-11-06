@@ -1,11 +1,10 @@
-import "reflect-metadata";
 import { ApolloServer } from "apollo-server";
 import * as path from "path";
 import { buildSchema } from "type-graphql";
 
 import { RecipeResolver } from "./graphql/schema_resolver";
 
-async function bootstrap() {
+export async function bootstrap() {
   // build TypeGraphQL executable schema
   const schema = await buildSchema({
     resolvers: [RecipeResolver],
@@ -21,6 +20,5 @@ async function bootstrap() {
   // Start the server
   const { url } = await server.listen(4000);
   console.log(`Server is running, GraphQL Playground available at ${url}`);
+  return url
 }
-
-bootstrap();
