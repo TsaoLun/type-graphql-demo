@@ -1,11 +1,13 @@
 {
-  "name": "typed",
+  "name": "type-graphql-demo",
   "version": "1.0.0",
   "description": "graphql-demo",
   "main": "dist/main.js",
   "scripts": {
+    "prestart": "rm -rf dist && npm run build",
+    "build": "swc src -d dist -C module.type=commonjs -C jsc.parser.decorators=true -C jsc.parser.syntax=typescript -C jsc.transform.decoratorMetadata=true -C jsc.target=es2022",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "swc src -d dist -C module.type=commonjs -C jsc.parser.decorators=true -C jsc.parser.syntax=typescript -C jsc.transform.decoratorMetadata=true -C jsc.transform.legacyDecorator -C jsc.target=es2022 && node dist/main.js"
+    "start": "node dist/main.js"
   },
   "author": "TsaoLun",
   "license": "MIT",
@@ -14,6 +16,7 @@
     "@swc/core": "^1.3.14"
   },
   "dependencies": {
+    "apollo-server": "^3.11.1",
     "class-validator": "^0.13.2",
     "graphql": "^15.8.0",
     "reflect-metadata": "^0.1.13",
