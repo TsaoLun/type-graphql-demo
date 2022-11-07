@@ -1,11 +1,13 @@
 import "reflect-metadata";
-import { ApolloGateway } from "@apollo/gateway";
 import { ApolloServer } from "apollo-server";
+import { ApolloGateway } from "@apollo/gateway";
 import { parse } from "yaml";
 import fs from "fs";
+import * as path from "path";
+
 import { bootstrap as MainServe } from "./main";
 
-const SERVICES_FILE_PATH = "../services.yaml";
+const SERVICES_FILE_PATH = path.resolve(__dirname, "../services.yaml");
 const MAIN_SERVICE_NAME = "main";
 let serviceList: { name: string; url: string }[] = [];
 let mainService: { name: string; url: string };
@@ -13,21 +15,21 @@ let app: ApolloServer;
 
 // serviceList init
 (async () => {
-  //mainService = { name: MAIN_SERVICE_NAME, url: await MainServe() };
-  //serviceList.push(mainService);
+  mainService = { name: MAIN_SERVICE_NAME, url: await MainServe() };
+  serviceList.push(mainService);
   await bootstrap();
 })();
 // watch serviceList
 fs.watch(SERVICES_FILE_PATH, () => {
-  console.log(`Services Updating...`)
-  bootstrap()
+  console.log(`Services Updating...`);
+  bootstrap();
 });
 
 async function bootstrap() {
-  const servicesMap = parse(SERVICES_FILE_PATH);
+  const servicesMap = parse(fs.readFileSync(SERVICES_FILE_PATH, "utf8")) ?? {};
   serviceList = serviceList.filter((e) => e.name === MAIN_SERVICE_NAME);
-  console.log(serviceList)
   for (const serviceName in servicesMap) {
+    console.log(`Service ${serviceName} ready at ${servicesMap[serviceName]}`);
     serviceList.push({ name: serviceName, url: servicesMap[serviceName] });
   }
   const gateway = new ApolloGateway({
@@ -40,6 +42,8 @@ async function bootstrap() {
   app = new ApolloServer({
     schema,
     executor,
+    tracing: false,
+    playground: true,
   });
   app.listen({ port: 3000 }).then(({ url }) => {
     console.log(`Apollo Gateway ready at ${url}`);
