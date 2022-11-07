@@ -9,6 +9,6 @@ export default class Restaurant {
   @Field()
   star: number;
 
-  @Field()
-  recipes: string[];
+  // @Field()
+  // recipes: string[];
 }

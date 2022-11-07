@@ -4,6 +4,7 @@ import { ApolloGateway } from "@apollo/gateway";
 import { parse } from "yaml";
 import fs from "fs";
 import * as path from "path";
+import fetch from "node-fetch";
 
 import { bootstrap as MainServe } from "./main";
 
@@ -29,6 +30,14 @@ async function bootstrap() {
   const servicesMap = parse(fs.readFileSync(SERVICES_FILE_PATH, "utf8")) ?? {};
   serviceList = serviceList.filter((e) => e.name === MAIN_SERVICE_NAME);
   for (const serviceName in servicesMap) {
+    try {
+      await fetch(servicesMap[serviceName]);
+    } catch (_) {
+      console.warn(
+        `Service ${serviceName} error at ${servicesMap[serviceName]}`,
+      );
+      continue;
+    }
     console.log(`Service ${serviceName} ready at ${servicesMap[serviceName]}`);
     serviceList.push({ name: serviceName, url: servicesMap[serviceName] });
   }

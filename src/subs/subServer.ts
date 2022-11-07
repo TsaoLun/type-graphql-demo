@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { ApolloServer } from "apollo-server";
 import RestaurantRs from "./restaurantRs";
 import Restaurant from "./restaurant";

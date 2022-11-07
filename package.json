@@ -8,7 +8,8 @@
     "build": "swc src -d dist -C module.type=commonjs -C jsc.parser.decorators=true -C jsc.parser.syntax=typescript -C jsc.transform.decoratorMetadata=true -C jsc.target=es2022",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/main.js",
-    "serve": "rm -rf dist && npm run build && node dist/federation.js"
+    "serve": "rm -rf dist && npm run build && node dist/federation.js",
+    "sub": "node dist/subs/subServer.js"
   },
   "author": "TsaoLun",
   "license": "MIT",
@@ -21,6 +22,7 @@
     "apollo-server": "2.21.0",
     "class-validator": "^0.13.2",
     "graphql": "15.5.0",
+    "node-fetch": "2",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
     "yaml": "^2.1.3"
