@@ -54,16 +54,19 @@ async function bootstrap() {
     tracing: false,
     playground: true,
     subscriptions: {
-      onConnect:(connectionParams)=>{
-        console.log("Client connected!")
-        console.log(connectionParams)
-      },
-      onDisconnect:()=>{
-        console.log("Client disconnected!")
-      },
+      path: "/subscriptions",
+      // onConnect:(connectionParams, ws)=>{
+      //   console.log("Client connected!")
+      //   console.log(connectionParams)
+      // },
+      // onDisconnect:()=>{
+      //   console.log("Client disconnected!")
+      // },
     }
   });
-  app.listen({ port: 3000 }).then(({ url }) => {
-    console.log(`Apollo Gateway ready at ${url}`);
+  //app.installSubscriptionHandlers(http.createServer())
+  console.log(`🚀 Subscriptions ready at ws://localhost:${3000}${app.subscriptionsPath}`);
+  app.listen({ port: 3000 }).then(({ url, server }) => {
+    console.log(`🚀 Apollo Gateway ready at ${url}`);
   });
 }
