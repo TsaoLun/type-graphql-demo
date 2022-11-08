@@ -53,6 +53,15 @@ async function bootstrap() {
     executor,
     tracing: false,
     playground: true,
+    subscriptions: {
+      onConnect:(connectionParams)=>{
+        console.log("Client connected!")
+        console.log(connectionParams)
+      },
+      onDisconnect:()=>{
+        console.log("Client disconnected!")
+      },
+    }
   });
   app.listen({ port: 3000 }).then(({ url }) => {
     console.log(`Apollo Gateway ready at ${url}`);

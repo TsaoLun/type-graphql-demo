@@ -35,15 +35,6 @@ export async function bootstrap() {
     schema,
     tracing: false,
     playground: true,
-    subscriptions: {
-      onConnect:(connectionParams)=>{
-        console.log("Client connected!")
-        console.log(connectionParams)
-      },
-      onDisconnect:()=>{
-        console.log("Client disconnected!")
-      },
-    }
   });
 
   // Start the server
