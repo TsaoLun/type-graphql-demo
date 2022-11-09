@@ -1,20 +1,20 @@
-import Resaurant from "./restaurant"
-import {Resolver, Query, Arg} from "type-graphql"
+import Resaurant from "./restaurant";
+import { Arg, Query, Resolver } from "type-graphql";
 
-@Resolver(of => Resaurant)
+@Resolver((of) => Resaurant)
 export default class RestaurantRs {
-  @Query(returns => [Resaurant])
+  @Query((returns) => [Resaurant])
   async topResaurant(
-    @Arg("first", {defaultValue: 5})
-    first: number,){
+    @Arg("first", { defaultValue: 5 }) first: number,
+  ) {
     return [{
-      name:"The White",
+      name: "The White",
       star: 5,
-      recipes:[]
-    },{
-      name:"The Pink",
+      recipes: [],
+    }, {
+      name: "The Pink",
       star: 3,
-      recipes:[]
-    }]
+      recipes: [],
+    }];
   }
 }

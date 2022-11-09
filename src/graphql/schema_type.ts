@@ -1,29 +1,35 @@
-import "reflect-metadata"
-import { Field, ObjectType, Int, Float } from "type-graphql"
+import "reflect-metadata";
+import { Field, Float, Int, ObjectType } from "type-graphql";
 
 @ObjectType({ description: "Object representing cooking recipe" })
 export class Recipe {
-  @Field({description:"菜谱名字"})
+  @Field({ description: "菜谱名字" })
   title: string;
 
-  @Field(type => String, { nullable: true, deprecationReason: "Use `description` field instead" })
+  @Field((type) => String, {
+    nullable: true,
+    deprecationReason: "Use `description` field instead",
+  })
   get specification(): string | undefined {
     return this.description;
   }
 
-  @Field({ nullable: true, description: "The recipe description with preparation info" })
+  @Field({
+    nullable: true,
+    description: "The recipe description with preparation info",
+  })
   description?: string;
 
-  @Field(type => [Int])
+  @Field((type) => [Int])
   ratings: number[];
 
   @Field()
   creationDate: Date;
 
-  @Field(type => Int)
+  @Field((type) => Int)
   ratingsCount: number;
 
-  @Field(type => Float, { nullable: true })
+  @Field((type) => Float, { nullable: true })
   get averageRating(): number | null {
     const ratingsCount = this.ratings.length;
     if (ratingsCount === 0) {
