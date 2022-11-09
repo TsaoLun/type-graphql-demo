@@ -9,13 +9,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/main.js",
     "serve": "rm -rf dist && npm run build && node dist/federation.js",
-    "sub": "node dist/subs/subServer.js"
+    "sub": "node dist/subs/subServer.js",
+    "bundle": "./node_modules/.bin/esbuild dist/federation.js --bundle --platform=node --target=node16.18 --outfile=out.js"
   },
   "author": "TsaoLun",
   "license": "MIT",
   "devDependencies": {
     "@swc/cli": "^0.1.57",
-    "@swc/core": "^1.3.14"
+    "@swc/core": "^1.3.14",
+    "esbuild": "^0.15.13"
   },
   "dependencies": {
     "@apollo/gateway": "^0.28",
