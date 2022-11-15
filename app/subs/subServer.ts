@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { ApolloServer, PubSub } from "apollo-server";
+import { ApolloServer } from "apollo-server";
 import RestaurantRs from "./restaurantRs";
 import Restaurant from "./restaurant";
 import { buildFederatedSchema } from "../utils/buildFedSchema";

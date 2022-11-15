@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "prestart": "rm -rf dist && npm run build",
-    "build": "swc src -d dist -C module.type=commonjs -C jsc.parser.decorators=true -C jsc.parser.syntax=typescript -C jsc.transform.decoratorMetadata=true -C jsc.target=es2022",
+    "build": "swc app -d dist -C module.type=commonjs -C jsc.parser.decorators=true -C jsc.parser.syntax=typescript -C jsc.transform.decoratorMetadata=true -C jsc.target=es2022",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/main.js",
     "serve": "rm -rf dist && npm run build && node dist/federation.js",
