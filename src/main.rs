@@ -1,9 +1,11 @@
 mod models;
+mod db;
 
 use async_graphql::*;
 use actix_web::{guard, web, web::Data, App, HttpRequest, HttpResponse, HttpServer, Result};
 use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse, GraphQLSubscription};
 use models::books::{BooksSchema, MutationRoot, QueryRoot, Storage, SubscriptionRoot};
+use dotenv::dotenv;
 /* struct Query;
 
 #[Object]
@@ -47,6 +49,7 @@ async fn index_ws(
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    dotenv().ok();
     let schema = Schema::build(QueryRoot, MutationRoot, SubscriptionRoot)
         .data(Storage::default())
         .finish();

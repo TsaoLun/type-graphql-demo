@@ -4,7 +4,8 @@ use async_graphql::{Context, Enum, Object, Result, Schema, Subscription, ID};
 use futures_util::{lock::Mutex, Stream, StreamExt};
 use super::simple_broker::SimpleBroker;
 use slab::Slab;
-
+use sqlx;
+use super::super::db::pool::get_pool;
 pub type BooksSchema = Schema<QueryRoot, MutationRoot, SubscriptionRoot>;
 
 #[derive(Clone)]
@@ -59,6 +60,17 @@ impl MutationRoot {
             mutation_type: MutationType::Created,
             id: id.clone(),
         });
+
+        sqlx::query!(
+            r#"INSERT INTO `books` (`id`,`name`,`author`) VALUES(?,?,?) ON DUPLICATE KEY UPDATE `id`=`id`"#,
+            id.clone(),
+            name,
+            author,
+        )
+        .fetch_all(&get_pool().await)
+        .await
+        .unwrap();
+
         id
     }
 
