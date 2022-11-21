@@ -6,6 +6,7 @@ use super::simple_broker::SimpleBroker;
 use slab::Slab;
 use sqlx;
 use super::super::db::pool::get_pool;
+use uuid::Uuid;
 pub type BooksSchema = Schema<QueryRoot, MutationRoot, SubscriptionRoot>;
 
 #[derive(Clone)]
@@ -46,32 +47,17 @@ pub struct MutationRoot;
 
 #[Object]
 impl MutationRoot {
-    async fn create_book(&self, ctx: &Context<'_>, name: String, author: String) -> ID {
-        let mut books = ctx.data_unchecked::<Storage>().lock().await;
-        let entry = books.vacant_entry();
-        let id: ID = entry.key().into();
-        let book = Book {
-            id: id.clone(),
-            name,
-            author,
-        };
-        entry.insert(book);
-        SimpleBroker::publish(BookChanged {
-            mutation_type: MutationType::Created,
-            id: id.clone(),
-        });
-
+    async fn create_book(&self, _ctx: &Context<'_>, name: String, author: String) -> anyhow::Result<bool> {
         sqlx::query!(
             r#"INSERT INTO `books` (`id`,`name`,`author`) VALUES(?,?,?) ON DUPLICATE KEY UPDATE `id`=`id`"#,
-            id.clone(),
+            Uuid::new_v4().to_string().to_uppercase().replace("-",""),
             name,
             author,
         )
-        .fetch_all(&get_pool().await)
-        .await
-        .unwrap();
+        .execute(&get_pool().await)
+        .await?;
 
-        id
+        Ok(true)
     }
 
     async fn delete_book(&self, ctx: &Context<'_>, id: ID) -> Result<bool> {
